@@ -13,4 +13,9 @@ class Recurso:
         self.id: str = id
         self.categoria: str = categoria
 
-        
+class Asignacion:
+    def __init__(self, id_tarea: str, id_recurso: str, inicio: int, fin: int) -> None:
+        self.id_tarea = id_tarea
+        self.id_recurso = id_recurso
+        self.inicio = inicio
+        self.fin = fin
