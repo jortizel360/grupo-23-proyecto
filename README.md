@@ -1,1 +1,0 @@
-# grupo-23-proyecto
