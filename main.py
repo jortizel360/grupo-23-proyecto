@@ -8,4 +8,9 @@ class Tarea:
         self.categoria: str = categoria 
 
         
-    
+class Recurso:
+    def __init__(self, id: str, categoria: str) -> None:
+        self.id: str = id
+        self.categoria: str = categoria
+
+        
