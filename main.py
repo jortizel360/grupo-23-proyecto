@@ -13,4 +13,21 @@ class Recurso:
         self.id: str = id
         self.categoria: str = categoria
 
+class GestorTareas:
+    def __init__(self):
+        self.tareas = []
+        self.recursos = []
+    
+    def agregar_tarea(self, tarea):
+        self.tareas.append(tarea)
+    
+    def agregar_recurso(self, recurso):
+        self.recursos.append(recurso)
+    
+    def cargar_desde_csv(self, archivo):
         
+        pass
+    
+    def guardar_a_csv(self, archivo):
+        
+        pass
