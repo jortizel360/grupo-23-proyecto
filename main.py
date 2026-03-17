@@ -37,3 +37,13 @@ class GestorTareas:
     def guardar_a_csv(self, archivo):
         
         pass
+    
+    def leer_tareas(ruta:str) -> list[Tarea]:
+        tareas = []
+        with open(ruta, 'r') as file:
+            reader = csv.reader(file)
+            next(reader)  # Saltar la cabecera
+            for row in reader:
+                tarea = Tarea(id=row[0], duracion=row[1], categoria=row[2])
+                tareas.append(tarea)
+        return tareas
