@@ -47,3 +47,17 @@ class GestorTareas:
                 tarea = Tarea(id=row[0], duracion=row[1], categoria=row[2])
                 tareas.append(tarea)
         return tareas
+    
+    def leer_recursos(self, ruta: str) -> list[Recurso]:
+        recursos: list[Recurso] = []
+        with open(ruta, 'r', encoding='utf-8') as archivo:
+            for linea in archivo:
+                linea = linea.strip()
+                if not linea:
+                    continue
+                partes = linea.split(',')
+                recursos.append(Recurso(
+                    id=partes[0].strip(),
+                    categoria=partes[1].strip()
+                ))
+        return recursos
