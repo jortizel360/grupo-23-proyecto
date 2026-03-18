@@ -22,7 +22,7 @@ class Asignacion:
 
 def leer_tareas(ruta:str) -> list[Tarea]:
     tareas = []
-     with open(ruta, 'r') as file:
+    with open(ruta, 'r') as file:
         reader = csv.reader(file)
         next(reader)  # Saltar la cabecera
         for row in reader:
@@ -30,7 +30,7 @@ def leer_tareas(ruta:str) -> list[Tarea]:
             tareas.append(tarea)
     return tareas
     
-def leer_recursos(self, ruta: str) -> list[Recurso]:
+def leer_recursos(ruta: str) -> list[Recurso]:
     recursos: list[Recurso] = []
     with open(ruta, 'r', encoding='utf-8') as archivo:
         for linea in archivo:
@@ -41,18 +41,28 @@ def leer_recursos(self, ruta: str) -> list[Recurso]:
             recursos.append(Recurso(
                 id=partes[0].strip(),
                 categoria=partes[1].strip()
-                ))
-        return recursos
+            ))
+    return recursos
     
 def planificar(tareas: list[Tarea], recursos: list[Recurso]) -> list[Asignacion]:
     tiempo_libre: dict[str, int] = {}
     for recurso in recursos:
         tiempo_libre[recurso.id] = 0
 
-tareas_ordenadas: list[Tarea] = sorted(
-    tareas,
-key=lambda t: t.duracion,
-reverse=True
+    tareas_ordenadas: list[Tarea] = sorted(
+        tareas,
+        key=lambda t: t.duracion,
+        reverse=True
+    )
+    
+    lista_asignaciones: list[Asignacion] = []
+    for tarea in tareas_ordenadas:
+        recursos_compatibles: list[Recurso] = []
+        for recurso in recursos:
+            if recurso.categoria == tarea.categoria:
+                recursos_compatibles.append(recurso)
+    
+
 
 
 
