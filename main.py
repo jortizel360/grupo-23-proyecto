@@ -19,25 +19,6 @@ class Asignacion:
         self.id_recurso = id_recurso
         self.inicio = inicio
         self.fin = fin
-        
-class GestorTareas:
-    def __init__(self):
-        self.tareas = []
-        self.recursos = []
-    
-    def agregar_tarea(self, tarea):
-        self.tareas.append(tarea)
-    
-    def agregar_recurso(self, recurso):
-        self.recursos.append(recurso)
-    
-    def cargar_desde_csv(self, archivo):
-        
-        pass
-    
-    def guardar_a_csv(self, archivo):
-        
-        pass
 
 def leer_tareas(ruta:str) -> list[Tarea]:
     tareas = []
@@ -63,8 +44,11 @@ def leer_recursos(self, ruta: str) -> list[Recurso]:
                 ))
         return recursos
     
-    def cargar_datos(self, archivo_tareas: str, archivo_recursos: str) -> None:
-        self.tareas = self.leer_tareas(archivo_tareas)
-        self.recursos = self.leer_recursos(archivo_recursos)
+def planificar(tareas: list[Tarea], recursos: list[Recurso]) -> list[Asignacion]:
+    tiempo_libre: dict[str, int] = {}
+    for recurso in recursos:
+        tiempo_libre[recurso.id] = 0
+
+
 
    
