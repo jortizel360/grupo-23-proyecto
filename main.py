@@ -19,6 +19,7 @@ class Asignacion:
         self.id_recurso = id_recurso
         self.inicio = inicio
         self.fin = fin
+        
 class GestorTareas:
     def __init__(self):
         self.tareas = []
@@ -37,27 +38,32 @@ class GestorTareas:
     def guardar_a_csv(self, archivo):
         
         pass
+
+def leer_tareas(ruta:str) -> list[Tarea]:
+    tareas = []
+     with open(ruta, 'r') as file:
+        reader = csv.reader(file)
+        next(reader)  # Saltar la cabecera
+        for row in reader:
+            tarea = Tarea(id=row[0], duracion=row[1], categoria=row[2])
+            tareas.append(tarea)
+    return tareas
     
-    def leer_tareas(ruta:str) -> list[Tarea]:
-        tareas = []
-        with open(ruta, 'r') as file:
-            reader = csv.reader(file)
-            next(reader)  # Saltar la cabecera
-            for row in reader:
-                tarea = Tarea(id=row[0], duracion=row[1], categoria=row[2])
-                tareas.append(tarea)
-        return tareas
-    
-    def leer_recursos(self, ruta: str) -> list[Recurso]:
-        recursos: list[Recurso] = []
-        with open(ruta, 'r', encoding='utf-8') as archivo:
-            for linea in archivo:
-                linea = linea.strip()
-                if not linea:
-                    continue
-                partes = linea.split(',')
-                recursos.append(Recurso(
-                    id=partes[0].strip(),
-                    categoria=partes[1].strip()
+def leer_recursos(self, ruta: str) -> list[Recurso]:
+    recursos: list[Recurso] = []
+    with open(ruta, 'r', encoding='utf-8') as archivo:
+        for linea in archivo:
+            linea = linea.strip()
+            if not linea:
+                continue
+            partes = linea.split(',')
+            recursos.append(Recurso(
+                id=partes[0].strip(),
+                categoria=partes[1].strip()
                 ))
-        return recursos
+    return recursos
+    
+def planificar(tareas: list[Tarea], recursos: list[Recurso]) -> list[Asignacion]:
+    tiempo_libre: dict[str, int] = {}
+    for recurso in recursos:
+        tiempo_libre[recurso.id] = 0
