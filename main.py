@@ -61,3 +61,9 @@ class GestorTareas:
                     categoria=partes[1].strip()
                 ))
         return recursos
+    
+    def cargar_datos(self, archivo_tareas: str, archivo_recursos: str) -> None:
+        self.tareas = self.leer_tareas(archivo_tareas)
+        self.recursos = self.leer_recursos(archivo_recursos)
+
+   
