@@ -61,9 +61,10 @@ def leer_recursos(self, ruta: str) -> list[Recurso]:
                 id=partes[0].strip(),
                 categoria=partes[1].strip()
                 ))
-    return recursos
+        return recursos
     
-def planificar(tareas: list[Tarea], recursos: list[Recurso]) -> list[Asignacion]:
-    tiempo_libre: dict[str, int] = {}
-    for recurso in recursos:
-        tiempo_libre[recurso.id] = 0
+    def cargar_datos(self, archivo_tareas: str, archivo_recursos: str) -> None:
+        self.tareas = self.leer_tareas(archivo_tareas)
+        self.recursos = self.leer_recursos(archivo_recursos)
+
+   
