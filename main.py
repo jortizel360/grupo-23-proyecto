@@ -49,6 +49,11 @@ def planificar(tareas: list[Tarea], recursos: list[Recurso]) -> list[Asignacion]
     for recurso in recursos:
         tiempo_libre[recurso.id] = 0
 
+tareas_ordenadas: list[Tarea] = sorted(
+    tareas,
+key=lambda t: t.duracion,
+reverse=True
+
 
 
    
