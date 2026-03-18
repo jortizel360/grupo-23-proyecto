@@ -61,9 +61,8 @@ def planificar(tareas: list[Tarea], recursos: list[Recurso]) -> list[Asignacion]
         for recurso in recursos:
             if recurso.categoria == tarea.categoria:
                 recursos_compatibles.append(recurso)
-    
-
-
-
-
+        mejor_recurso: Recurso = min(
+            recursos_compatibles,
+            key=lambda r: tiempo_libre[r.id]
+        )
    
