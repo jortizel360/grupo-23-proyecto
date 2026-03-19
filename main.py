@@ -65,4 +65,44 @@ def planificar(tareas: list[Tarea], recursos: list[Recurso]) -> list[Asignacion]
             recursos_compatibles,
             key=lambda r: tiempo_libre[r.id]
         )
-   
+        inicio: int = tiempo_libre[mejor_recurso.id]
+        fin: int = inicio + tarea.duracion
+
+        asignacion_nueva = Asignacion(
+            id_tarea=tarea.id,
+            id_recurso=mejor_recurso.id,
+            inicio=inicio,
+            fin=fin
+        )
+        lista_asignaciones.append(asignacion_nueva)
+        tiempo_libre[mejor_recurso.id] = fin
+
+    return lista_asignaciones
+
+def escribir_output(asignaciones: list[Asignacion], ruta: str) -> None:
+    with open(ruta, 'w', encoding='utf-8') as archivo:
+        for asignacion in asignaciones:
+            linea = (f'{asignacion.id_tarea},{asignacion.id_recurso},'
+                     f'{asignacion.inicio},{asignacion.fin}\n')
+            archivo.write(linea)
+
+def main() -> None:
+    if len(sys.argv) < 2:
+        print('Error: falta el makespan objetivo.')
+        sys.exit(1)
+
+    makespan_objetivo: int = int(sys.argv[1])
+    tareas: list[Tarea] = leer_tareas('tareas.txt')
+    recursos: list[Recurso] = leer_recursos('recursos.txt')
+    asignaciones: list[Asignacion] = planificar(tareas, recursos)
+    makespan_obtenido: int = max(a.fin for a in asignaciones)
+
+    escribir_output(asignaciones, 'output.txt')
+
+    print(f'Makespan objetivo : {makespan_objetivo}')
+    print(f'Makespan obtenido : {makespan_obtenido}')
+    if makespan_obtenido <= makespan_objetivo:
+        print('Logramos el objetivo!')
+
+if __name__ == '__main__':
+    main()
