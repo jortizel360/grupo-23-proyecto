@@ -1,5 +1,5 @@
 import sys
-import csv
+
 
 class Tarea:
     def __init__(self, id: str, duracion: str, categoria: str):
