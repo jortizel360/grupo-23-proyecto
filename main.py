@@ -1,5 +1,7 @@
 import sys
 import csv
+import time
+
 
 class Tarea:
     def __init__(self, id: str, duracion: str, categoria: str):
@@ -9,9 +11,9 @@ class Tarea:
 
         
 class Recurso:
-    def __init__(self, id: str, categoria: str) -> None:
+    def __init__(self, id: str, categorias: set[str]) -> None:
         self.id: str = id
-        self.categoria: str = categoria
+        self.categorias: set[str] = categorias
 
 class Asignacion:
     def __init__(self, id_tarea: str, id_recurso: str, inicio: int, fin: int) -> None:
@@ -49,11 +51,7 @@ def planificar(tareas: list[Tarea], recursos: list[Recurso]) -> list[Asignacion]
     for recurso in recursos:
         tiempo_libre[recurso.id] = 0
 
-tareas_ordenadas: list[Tarea] = sorted(
-    tareas,
-key=lambda t: t.duracion,
-reverse=True
-
-
-
-   
+    tareas_ordenadas: list[Tarea] = sorted(
+        tareas,
+        key=lambda t: t.duracion,
+        reverse=True
