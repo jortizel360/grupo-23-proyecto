@@ -1,5 +1,7 @@
 import sys
 import csv
+import time 
+
 
 class Tarea:
     def __init__(self, id: str, duracion: str, categoria: str):
