@@ -5,9 +5,9 @@ import time
 
 
 class Tarea:
-    def __init__(self, id: str, duracion: str, categoria: str):
-        self.id = id
-        self.duracion = duracion
+    def __init__(self, id: str, duracion: str, categoria: str) -> None:
+        self.id: str = id
+        self.duracion: int = duracion
         self.categoria: str = categoria 
 
         
@@ -18,20 +18,25 @@ class Recurso:
 
 class Asignacion:
     def __init__(self, id_tarea: str, id_recurso: str, inicio: int, fin: int) -> None:
-        self.id_tarea = id_tarea
-        self.id_recurso = id_recurso
-        self.inicio = inicio
-        self.fin = fin
+        self.id_tarea: str = id_tarea
+        self.id_recurso: str = id_recurso
+        self.inicio: int = inicio
+        self.fin: int = fin
 
 def leer_tareas(ruta:str) -> list[Tarea]:
-    tareas = []
-    with open(ruta, 'r') as file:
-        reader = csv.reader(file)
-        next(reader)  # Saltar la cabecera
-        for row in reader:
-            tarea = Tarea(id=row[0], duracion=row[1], categoria=row[2])
-            tareas.append(tarea)
-    return tareas
+    lista_tareas: list[Tarea] = []
+    with open(ruta, 'r', encoding='utf-8') as archivo:
+        for linea in archivo:
+            linea = linea.strip()
+            if not linea:
+                continue
+            partes = linea.split(',')
+            lista_tareas.append(Tarea(
+                id=partes[0].strip(),
+                duracion=int(partes[1].strip()),
+                categoria=partes[2].strip()
+            ))
+    return lista_tareas
     
 
 def leer_recursos(ruta: str) -> list[Recurso]:
