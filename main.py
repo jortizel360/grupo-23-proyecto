@@ -64,26 +64,39 @@ def planificar(tareas: list[Tarea], recursos: list[Recurso]) -> list[Asignacion]
         reverse=True
     )
 
+    
+def planificar(tareas: list[Tarea], recursos: list[Recurso]) -> list[Asignacion]:
+
+    tareas_ordenadas: list[Tarea] = sorted(
+        tareas, key=lambda t: t.duracion, reverse=True
+    )
+
+    recursos_por_categoria: dict[str, list[Recurso]] = {}
+    for recurso in recursos:
+        for cat in recurso.categorias:
+            if cat not in recursos_por_categoria:
+                recursos_por_categoria[cat] = []
+            recursos_por_categoria[cat].append(recurso)
+
+    tiempo_libre: dict[str, int] = {r.id: 0 for r in recursos}
     lista_asignaciones: list[Asignacion] = []
+
     for tarea in tareas_ordenadas:
-        recursos_compatibles: list[Recurso] = []
-        for recurso in recursos:
-            if recurso.categoria == tarea.categoria:
-                recursos_compatibles.append(recurso)
+        compatibles: list[Recurso] = recursos_por_categoria.get(tarea.categoria, [])
+
         mejor_recurso: Recurso = min(
-            recursos_compatibles,
-            key=lambda r: tiempo_libre[r.id]
+            compatibles, key=lambda r: tiempo_libre[r.id]
         )
+
         inicio: int = tiempo_libre[mejor_recurso.id]
         fin: int = inicio + tarea.duracion
 
-        asignacion_nueva = Asignacion(
+        lista_asignaciones.append(Asignacion(
             id_tarea=tarea.id,
             id_recurso=mejor_recurso.id,
             inicio=inicio,
             fin=fin
-        )
-        lista_asignaciones.append(asignacion_nueva)
+        ))
         tiempo_libre[mejor_recurso.id] = fin
 
     return lista_asignaciones
