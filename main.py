@@ -52,17 +52,6 @@ def leer_recursos(ruta: str) -> list[Recurso]:
                 categorias=set(partes[1:])
             ))
     return lista_recursos
-    
-def planificar(tareas: list[Tarea], recursos: list[Recurso]) -> list[Asignacion]:
-    tiempo_libre: dict[str, int] = {}
-    for recurso in recursos:
-        tiempo_libre[recurso.id] = 0
-
-    tareas_ordenadas: list[Tarea] = sorted(
-        tareas,
-        key=lambda t: t.duracion,
-        reverse=True
-    )
 
     
 def planificar(tareas: list[Tarea], recursos: list[Recurso]) -> list[Asignacion]:
