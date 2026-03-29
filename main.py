@@ -90,6 +90,72 @@ def planificar(tareas: list[Tarea], recursos: list[Recurso]) -> list[Asignacion]
 
     return lista_asignaciones
 
+def busqueda_local(
+    asignaciones: list[Asignacion],
+    tareas: list[Tarea],
+    recursos: list[Recurso],
+    tiempo_inicio: float,
+    limite: float = 8.5
+) -> list[Asignacion]:
+    tarea_por_id: dict[str, Tarea] = {t.id: t for t in tareas}
+    mejoro = True
+    while mejoro and (time.time() - tiempo_inicio) < limite:
+        mejoro = False
+
+        carga: dict[str, int] = {}
+        for a in asignaciones:
+            if a.id_recurso not in carga or a.fin > carga[a.id_recurso]:
+                carga[a.id_recurso] = a.fin
+
+        makespan_actual: int = max(carga.values())
+        id_critico: str = max(carga, key=lambda r: carga[r])
+        tareas_criticas: list[Asignacion] = sorted(
+            [a for a in asignaciones if a.id_recurso == id_critico],
+            key=lambda a: a.fin - a.inicio,
+            reverse=True
+        )
+        for asig in tareas_criticas:
+            if (time.time() - tiempo_inicio) >= limite:
+                break
+            tarea = tarea_por_id[asig.id_tarea]
+
+            for recurso in recursos:
+                if recurso.id == id_critico:
+                    continue
+                if tarea.categoria not in recurso.categorias:
+                    continue
+                fin_alt: int = max(
+                    (a.fin for a in asignaciones if a.id_recurso == recurso.id),
+                    default=0
+                )
+                nuevo_fin: int = fin_alt + tarea.duracion
+                nuevo_fin_critico: int = max(
+                    (a.fin for a in asignaciones
+                     if a.id_recurso == id_critico and a.id_tarea != tarea.id),
+                    default=0
+                )
+                nuevo_fin_alt: int = max(carga.get(recurso.id, 0), nuevo_fin)
+                nuevo_makespan: int = max(
+                    v for k, v in carga.items()
+                    if k != id_critico and k != recurso.id
+                )
+                nuevo_makespan = max(nuevo_makespan, nuevo_fin_critico, nuevo_fin_alt)
+                if nuevo_makespan < makespan_actual:
+                    for a in asignaciones:
+                        if a.id_tarea == tarea.id:
+                            a.id_recurso = recurso.id
+                            a.inicio = fin_alt
+                            a.fin = nuevo_fin
+                            break
+                    mejoro = True
+                    break
+
+            if mejoro:
+                break
+
+    return asignaciones
+
+
 def escribir_output(asignaciones: list[Asignacion], ruta: str) -> None:
     with open(ruta, 'w', encoding='utf-8') as archivo:
         for asignacion in asignaciones:
