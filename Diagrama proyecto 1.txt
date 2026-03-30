@@ -1,0 +1,17 @@
+importar libreria sys y csv definir clases
+              
+Leer archivos de entrada
+
+crear reloj por recurso (tiempo_libre)
+
+Ordenar tareas 
+
+Para cada tarea filtrar recursos compatibles 
+
+Elegir el recurso menos cargado 
+
+Calcular inicio y fin, asignar la tarea 
+
+Repetir pasos 3 y 5 para todas las tareas
+
+Calcular makespan y escribir el output 

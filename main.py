@@ -2,7 +2,7 @@ import sys
 import csv
 
 class Tarea:
-    def __init__(self, id: str, duracion: str, categoria: str):
+    def __init__(self, id: str, duracion: int, categoria: str):
         self.id = id
         self.duracion = duracion
         self.categoria: str = categoria 
@@ -24,9 +24,8 @@ def leer_tareas(ruta:str) -> list[Tarea]:
     tareas = []
     with open(ruta, 'r') as file:
         reader = csv.reader(file)
-        next(reader)  # Saltar la cabecera
         for row in reader:
-            tarea = Tarea(id=row[0], duracion=row[1], categoria=row[2])
+            tarea = Tarea(id=row[0], duracion=int(row[1]), categoria=row[2])
             tareas.append(tarea)
     return tareas
     
@@ -61,6 +60,11 @@ def planificar(tareas: list[Tarea], recursos: list[Recurso]) -> list[Asignacion]
         for recurso in recursos:
             if recurso.categoria == tarea.categoria:
                 recursos_compatibles.append(recurso)
+        
+        if not recursos_compatibles:
+            print(f'Advertencia: No hay recursos compatibles para la tarea {tarea.id}. Se omitirá.')
+            continue
+
         mejor_recurso: Recurso = min(
             recursos_compatibles,
             key=lambda r: tiempo_libre[r.id]
