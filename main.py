@@ -24,16 +24,7 @@ class Asignacion:
         self.fin: int = fin
 
 def leer_tareas(ruta:str) -> list[Tarea]:
-    tareas = []
-    with open(ruta, 'r') as file:
-        reader = csv.reader(file)
-        for row in reader:
-            tarea = Tarea(id=row[0], duracion=int(row[1]), categoria=row[2])
-            tareas.append(tarea)
-    return tareas
-    
-def leer_recursos(ruta: str) -> list[Recurso]:
-    recursos: list[Recurso] = []
+    lista_tareas: list[Tarea] = []
     with open(ruta, 'r', encoding='utf-8') as archivo:
         for linea in archivo:
             linea = linea.strip()
