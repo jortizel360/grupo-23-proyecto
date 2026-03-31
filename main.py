@@ -163,23 +163,33 @@ def escribir_output(asignaciones: list[Asignacion], ruta: str) -> None:
                      f'{asignacion.inicio},{asignacion.fin}\n')
             archivo.write(linea)
 
+
 def main() -> None:
     if len(sys.argv) < 2:
-        print('Error: falta el makespan objetivo.')
+        print('Uso: python main.py <makespan_objetivo>')
         sys.exit(1)
 
+    t_inicio: float = time.time()
     makespan_objetivo: int = int(sys.argv[1])
+
     tareas: list[Tarea] = leer_tareas('tareas.txt')
     recursos: list[Recurso] = leer_recursos('recursos.txt')
-    asignaciones: list[Asignacion] = planificar(tareas, recursos)
-    makespan_obtenido: int = max(a.fin for a in asignaciones)
 
+    asignaciones: list[Asignacion] = planificar(tareas, recursos)
+    asignaciones = busqueda_local(asignaciones, tareas, recursos, t_inicio)
+
+    makespan_obtenido: int = max(a.fin for a in asignaciones)
     escribir_output(asignaciones, 'output.txt')
 
-    print(f'Makespan objetivo : {makespan_objetivo}')
-    print(f'Makespan obtenido : {makespan_obtenido}')
+    t_total: float = time.time() - t_inicio
+    print(f'Tareas planificadas : {len(asignaciones)}')
+    print(f'Makespan objetivo   : {makespan_objetivo}')
+    print(f'Makespan obtenido   : {makespan_obtenido}')
+    print(f'Tiempo CPU          : {t_total:.3f}s')
     if makespan_obtenido <= makespan_objetivo:
         print('Logramos el objetivo!')
+    else:
+        print('Makespan supera el objetivo.')
 
 if __name__ == '__main__':
     main()
